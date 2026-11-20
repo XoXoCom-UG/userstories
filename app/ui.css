@@ -243,3 +243,11 @@ button.avatar{ border:0; padding:0; }
 .acct-out{ width:100%; text-align:left; padding:var(--sp-2) 6px; border:0; border-radius:var(--radius-sm); background:none;
   color:var(--secondary-foreground); font-size:var(--text-xs); }
 @media (hover:hover) and (pointer:fine){ .acct-out:hover{ background:var(--tint-2); color:var(--foreground); } }
+
+/* ---------- Beta gate ---------- */
+.gate-eyebrow{ display:inline-block; margin-bottom:var(--sp-3); font-size:var(--text-2xs); font-weight:600;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--primary-soft); }
+.key-input{ font-family:var(--font-mono) !important; letter-spacing:.08em; text-transform:uppercase; }
+.key-input::placeholder{ color:var(--muted-foreground); letter-spacing:.08em; }
+.gate-foot{ margin:var(--sp-4) 0 0; font-size:var(--text-2xs); line-height:1.5; color:var(--muted-foreground); }
+.gate-link{ border:0; background:none; padding:0; font:inherit; color:var(--secondary-foreground); text-decoration:underline; }

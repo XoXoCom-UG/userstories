@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth-context";
 import { nextFromLocation } from "@/lib/safe-next";
+import { captureBetaKeyFromUrl } from "@/lib/beta-key-handoff";
 import { Turnstile, TURNSTILE_SITE_KEY, type TurnstileHandle } from "@/components/turnstile";
 import { Tile } from "@/components/app-launcher";
 import { XOXO_APPS } from "@/lib/xoxocom-apps";
@@ -55,6 +56,10 @@ export default function LoginPage() {
   const emailRef = useRef<HTMLInputElement>(null);
   const pwRef = useRef<HTMLInputElement>(null);
   const uid = useId();
+
+  // The invitation email links here with the key in the fragment. Take it before
+  // anything navigates away and drops it (see lib/beta-key-handoff.ts).
+  useEffect(() => { captureBetaKeyFromUrl(); }, []);
 
   // Came back to /login while already signed in.
   useEffect(() => { if (!authLoading && token) router.replace(nextFromLocation()); }, [token, authLoading, router]);
