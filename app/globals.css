@@ -1,0 +1,259 @@
+
+/* =============================================================================
+   DESIGN TOKENS — ported from Ana's mockup (agxp-functional-ui, v7), accent
+   swapped from gold to blue per Patryk's 2026-09-02 review ("schwarz mit
+   Blau, transparentes Blau — wie PowerPoint Slides"). Dark (near-monochrome
+   graphite) is the base; `html.light` overrides for light mode. Every
+   colour, radius, layer and blur in agxp-design.css resolves from here, so
+   only the values in this block ever need to move.
+   ============================================================================= */
+:root {
+  /* Neutral near-black graphite (Ana, 2026-09-27: "gri negru", not dark
+     blue). The blue lives only in the accent and in the lights behind the
+     panels, so the surfaces themselves carry no hue. */
+  --background:#060607;
+  --foreground:#ECECEE;
+
+  --card:#141416;
+  --card-foreground:#ECECEE;
+  --popover:#18181B;
+  --popover-foreground:#ECECEE;
+
+  /* Three faces, loaded in app/layout.tsx. The fallbacks matter: next/font
+     sets these variables on <html>, so anything rendered before that (or with
+     fonts blocked) still gets a sane stack instead of Times. */
+  --font-display:"Familjen Grotesk", var(--font-sans), -apple-system, "Segoe UI", sans-serif;
+  --font-mono:var(--font-mono-face), ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --primary:#154E80;
+  /* Dark ink, because a primary surface is now the pale end of the blue
+     gradient below, the way B draws its buttons. */
+  --primary-foreground:#061018;
+  --primary-soft:#2E7BC4;
+  /* Built from the accent rather than hardcoded, so lib/accent.ts still
+     repaints every primary surface in the app when the user picks a colour. */
+  --primary-grad:linear-gradient(140deg, color-mix(in srgb, var(--primary-soft) 42%, #FFFFFF), var(--primary-soft));
+
+  --secondary:#18181B;
+  --secondary-foreground:#AEAEB5;
+  --muted:#18181B;
+  --muted-foreground:#8A8A93;   /* 5.0–5.4:1 on every dark surface (AA) */
+  --accent:#1C1C20;
+  --accent-foreground:#ECECEE;
+  /* Ana's palette: a surface that is clearly lighter than the page, for the
+     composer and the user's own messages — not a subtle tint like --accent. */
+  --surface-elevated:#202024;
+
+  --destructive:#E0574A;
+  --destructive-foreground:#FBEAE6;
+  --success:#3FB27F;
+  --warn:#D89434;
+
+  /* "Go": the green of Start and of the Current-project chip (Ana's
+     2026-09-28 mockup). Deliberately NOT mixed from the accent — every other
+     filled surface follows whatever colour is picked in Settings, but "you
+     can begin now" has to mean the same thing whichever accent is on, and
+     the one green pill is also what keeps the bar from being all one hue. */
+  --go:#3FD98A;
+  --go-ink:#06301C;
+  --go-fill:linear-gradient(180deg, #86F0BC 0%, #45DC90 58%, #23C077 100%);
+  --go-glow:rgba(63,217,138,0.55);
+
+  /* Coach vs Consultant: both on the same graphite scale — the Consultant
+     side sits a step brighter because it leads the screen. */
+  --coach-1:#141416; --coach-2:#19191C; --coach-3:#0B0B0D;
+  --consultant-1:#151517; --consultant-2:#1A1A1D; --consultant-3:#0D0D0F;
+
+  --border:rgba(255,255,255,0.075);
+  --border-strong:rgba(255,255,255,0.20);
+  --input:rgba(255,255,255,0.12);
+  --ring:var(--primary-soft);
+  --hl:rgba(255,255,255,0.06);
+  /* Hover and pressed fills, and faint separators: white on dark, black on
+     light. A raw rgba(255,255,255,…) hover is invisible on the light theme,
+     which is how half the menus there lost their hover state. */
+  --tint-1:rgba(255,255,255,0.03);
+  --tint-2:rgba(255,255,255,0.05);
+  --tint-3:rgba(255,255,255,0.08);
+  --tint-4:rgba(255,255,255,0.12);
+  /* The strongest ink the theme has: white on dark, black on light. For the
+     one filled control that should read as "press me" in either theme. */
+  --ink-max:#FFFFFF;
+  /* Shadows are black on the dark theme; on the light one they take the
+     graphite of the text, so no surface casts a blue or a warm shadow. */
+  --shadow-rgb:0,0,0;
+
+  --ease-out:cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out:cubic-bezier(0.77, 0, 0.175, 1);
+  --focus-ring:0 0 0 2px var(--background), 0 0 0 4px var(--ring);
+
+  /* Radius: four steps. Tighter inside, softer outside — a control sits in a
+     card, a card sits on a surface. */
+  --radius-xs:6px;    /* chips, tags, inline code */
+  --radius-sm:8px;    /* buttons and fields */
+  --radius-md:12px;   /* cards, menus, the composer */
+  --radius-lg:16px;   /* panels, dialogs, sheets */
+  --radius-pill:999px;
+
+  /* Layers. Local stacking inside a component stays a small number (1–7);
+     these are the only values that decide what covers what across the app. */
+  --z-header:40;
+  --z-tooltip:50;
+  --z-popover:60;
+  --z-toast:70;
+  --z-overlay:80;
+  --z-dialog:90;
+  --z-skip:200;
+
+  /* Blur: two strengths. Surfaces that carry text frost lightly; things that
+     float over content frost more, so they separate from it. */
+  --blur-surface:24px;
+  --blur-float:32px;
+
+  /* Type scale — nine steps, nothing below 10px. */
+  --text-3xs:10px; --text-2xs:11px; --text-xs:12px; --text-sm:13px; --text-base:14px;
+  --text-lg:16px; --text-xl:20px; --text-2xl:25px; --text-3xl:31px;
+
+  /* Spacing — multiples of 4. */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-6:24px; --sp-7:32px;
+}
+
+html.light {
+  /* Light, take two (Ana, 2026-10-01: "arată bine cam numa pe dark").
+     The first light theme was the dark one inverted: a #FAFAFA room under
+     white glass, so every surface was white on white and the screen had no
+     edges. Light needs the opposite structure — a cool grey desk and solid
+     white sheets on it, separated by a hairline and a short, tight shadow
+     rather than by translucency. */
+  --background:#ECEEF2;
+  --foreground:#111318;
+
+  --card:#FFFFFF;
+  --card-foreground:#111318;
+  --popover:#FFFFFF;
+  --popover-foreground:#111318;
+
+  /* On white, the pale end of the accent is a 2:1 smear with dark ink on
+     it. Light buttons are the deep accent with white ink instead — mixed from
+     the accent, so Settings still repaints them. 6.4:1 at the light end on
+     Blue, and every accent's --primary clears 6:1 against white. */
+  --primary-foreground:#FFFFFF;
+  --primary-grad:linear-gradient(140deg, color-mix(in srgb, var(--primary-soft) 55%, var(--primary)), var(--primary));
+
+  --secondary:#F1F2F5;
+  --secondary-foreground:#3D414A;
+  --muted:#F1F2F5;
+  --muted-foreground:#5A5F6B;   /* 6.5:1 on white, 5.6:1 on the room (AA) */
+  --accent:#ECEEF2;
+  --accent-foreground:#111318;
+  --surface-elevated:#F3F4F7;
+
+  --destructive:#B84B3E;
+  --destructive-foreground:#FBEAE6;
+  --success:#2F7A4A;
+  --warn:#9A6012;
+
+  /* The light theme takes the same green a shade deeper, so the pill still
+     carries against white instead of glowing off it. */
+  --go:#1FA968;
+  --go-ink:#05301C;
+  --go-fill:linear-gradient(180deg, #8DEFBF 0%, #4FD597 60%, #2BBE7C 100%);
+  --go-glow:rgba(31,169,104,0.45);
+
+  --coach-1:#E6E9EF; --coach-2:#DDE1E8; --coach-3:#F1F3F6;
+  --consultant-1:#E4E8EF; --consultant-2:#DADFE7; --consultant-3:#F2F4F7;
+
+  /* Hairlines carry the structure now, so they are a step firmer than
+     before, and slightly cool so they sit with the room. */
+  --border:rgba(16,24,40,0.10);
+  --border-strong:rgba(16,24,40,0.19);
+  --input:rgba(16,24,40,0.15);
+  --hl:rgba(255,255,255,0.7);
+  --tint-1:rgba(16,24,40,0.025);
+  --tint-2:rgba(16,24,40,0.045);
+  --tint-3:rgba(16,24,40,0.065);
+  --tint-4:rgba(16,24,40,0.095);
+  --ink-max:#000000;
+  --shadow-rgb:16,24,40;
+}
+
+/* ── Dark mode base ─────────────────────────────────────────────────────────── */
+* { box-sizing: border-box; }
+
+html { background-color: var(--background); }
+
+body {
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* ── Component tokens: menus, glass, shadows ────────────────────────────────
+   Moved here from agxp-design.css, where five separate :root blocks each
+   redefined part of the glass recipe and the last one silently won. */
+:root {
+  /* The dropdown timing (Transitions.dev menu). */
+  --dropdown-open-dur:250ms;
+  --dropdown-close-dur:150ms;
+  --dropdown-pre-scale:0.97;
+  --dropdown-closing-scale:0.99;
+  --dropdown-ease:cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Glass: a tinted body, a strong blur with saturation, a lit top edge and an
+     inner glow — all four, or it falls back to looking like a grey box. */
+  --glass-blur:var(--blur-float);
+  --glass-sat:1.8;
+  --glass-fill:linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05) 45%, rgba(255,255,255,0.03));
+  --glass-fill-strong:linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06) 45%, rgba(255,255,255,0.04));
+  --glass-body:rgba(20,20,23,0.55);
+  --glass-body-strong:rgba(18,18,21,0.74);
+  --glass-hairline:rgba(255,255,255,0.12);
+  --glass-inner:inset 0 1px 0 rgba(255,255,255,0.14), inset 0 0 0 1px rgba(255,255,255,0.03);
+  /* The specular edge: a light catching one corner and dying before the
+     opposite one — the detail that separates glass from a blurred rectangle. */
+  --glass-spec:linear-gradient(150deg, rgba(255,255,255,0.46), rgba(255,255,255,0.05) 36%, transparent 64%);
+  --glass-drop:0 24px 60px -24px rgba(var(--shadow-rgb),0.75), 0 0 0 1px rgba(var(--shadow-rgb),0.12);
+  /* Separators drawn as a soft line of light instead of a hard rule. */
+  --glow-sep:rgba(255,255,255,0.16);
+
+  /* Two shadow levels: things that float over content, and dialogs. */
+  --shadow-float:0 12px 28px -14px rgba(var(--shadow-rgb),0.7);
+  --shadow-modal:0 24px 48px -20px rgba(var(--shadow-rgb),0.75);
+}
+html.light {
+  --glass-fill:linear-gradient(145deg, rgba(255,255,255,0.94), rgba(250,251,252,0.86) 50%, rgba(246,247,250,0.84));
+  --glass-fill-strong:linear-gradient(145deg, #FFFFFF, rgba(252,252,253,0.94) 50%, rgba(248,249,251,0.92));
+  /* Glass on a light room has almost nothing behind it to frost, so the
+     bodies are close to opaque: translucency there only reads as grey. */
+  --glass-body:rgba(255,255,255,0.84);
+  --glass-body-strong:rgba(255,255,255,0.94);
+  --glass-hairline:rgba(16,24,40,0.10);
+  --glass-inner:inset 0 1px 0 rgba(255,255,255,1);
+  --glass-spec:linear-gradient(150deg, rgba(255,255,255,0.95), rgba(255,255,255,0.35) 36%, transparent 64%);
+  --glass-drop:0 1px 2px rgba(var(--shadow-rgb),0.06), 0 18px 40px -22px rgba(var(--shadow-rgb),0.28);
+  --glow-sep:rgba(16,24,40,0.10);
+  /* Short and tight: a sheet on a desk, not a card floating in fog. */
+  --shadow-float:0 1px 2px rgba(var(--shadow-rgb),0.06), 0 10px 26px -14px rgba(var(--shadow-rgb),0.24);
+  --shadow-modal:0 2px 6px rgba(var(--shadow-rgb),0.06), 0 28px 56px -24px rgba(var(--shadow-rgb),0.32);
+}
+
+/* Visible keyboard focus everywhere (mouse clicks stay clean via :focus-visible).
+   The ring is --ring (the light end of the accent), not --primary: the deep
+   blue measured 2.3:1 against the near-black page, under the 3:1 a focus
+   indicator needs. Inside .app the same ring is drawn in ui.css, so this is
+   for anything outside it. */
+:where(a,button,[role="button"],input,textarea,select,summary,[tabindex]):focus-visible {
+  outline: 2px solid var(--ring); outline-offset: 2px; border-radius: 6px;
+}
+
+/* Respect reduced-motion globally. Reduced means fewer and gentler, not
+   zero: keyframes (which move things) are cut, and transitions are limited to
+   the properties that don't move anything — opacity and colour still fade,
+   transforms and layout jump. The few entrances worth keeping as a plain fade
+   are restored at the end of agxp-design.css. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+    transition-property: opacity, color, background-color, border-color, box-shadow, fill, stroke !important;
+    scroll-behavior: auto !important; }
+}
+
