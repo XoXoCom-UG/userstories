@@ -3,11 +3,9 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth-context";
-import { Tile } from "@/components/app-launcher";
-import { XOXO_APPS } from "@/lib/xoxocom-apps";
+import { BrandLogo } from "@/components/brand-logo";
 import { captureBetaKeyFromUrl, clearPendingBetaKey, usePendingBetaKey } from "@/lib/beta-key-handoff";
 
-const SELF = XOXO_APPS.find(a => a.id === "stories")!;
 
 /**
  * The door, while the product is in closed beta. Shown instead of the page to a
@@ -63,7 +61,7 @@ export function BetaGate({ unreadable, onAdmitted }: { unreadable: boolean; onAd
     return (
       <main className="auth">
         <div className="auth-card">
-          <div className="auth-brand"><Tile app={SELF} size={22} /><span>User Story Schneider</span></div>
+          <div className="auth-brand"><BrandLogo size={36} as="div" /></div>
           <h1>We couldn&apos;t check your invitation</h1>
           <p className="auth-sub">The connection to the server failed. Nothing is wrong with your account.</p>
           <button className="btn-go btn-wide" type="button" onClick={onAdmitted}>Try again</button>
@@ -75,7 +73,7 @@ export function BetaGate({ unreadable, onAdmitted }: { unreadable: boolean; onAd
   return (
     <main className="auth">
       <div className="auth-card">
-        <div className="auth-brand"><Tile app={SELF} size={22} /><span>User Story Schneider</span></div>
+        <div className="auth-brand"><BrandLogo size={36} as="div" /></div>
         <span className="gate-eyebrow">Closed beta</span>
         <h1>You need a key to come in</h1>
         <p className="auth-sub">

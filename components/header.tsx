@@ -3,12 +3,10 @@
 import { useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { AppLauncher, Tile } from "@/components/app-launcher";
+import { AppLauncher } from "@/components/app-launcher";
+import { BrandLogo } from "@/components/brand-logo";
 import { useAuth } from "@/lib/auth-context";
 import { usePresence, phaseClass } from "@/lib/use-presence";
-import { XOXO_APPS } from "@/lib/xoxocom-apps";
-
-const SELF = XOXO_APPS.find(a => a.id === "stories")!;
 
 /** The profile picture and its menu: who you are signed in as, and Sign out. */
 function AccountMenu() {
@@ -62,9 +60,8 @@ export function Header() {
   const { setTheme } = useTheme();
   return (
     <header className="navbar">
-      <Link className="brand" href="/" aria-label="User Story Schneider, home">
-        <Tile app={SELF} size={18} />
-        <span className="brand-name">User Story Schneider</span>
+      <Link className="brand" href="/" aria-label="AgentiX User Story, home">
+        <BrandLogo size={30} />
       </Link>
 
       <div className="util">

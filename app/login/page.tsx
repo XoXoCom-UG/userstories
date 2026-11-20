@@ -7,11 +7,9 @@ import { useAuth } from "@/lib/auth-context";
 import { nextFromLocation } from "@/lib/safe-next";
 import { captureBetaKeyFromUrl } from "@/lib/beta-key-handoff";
 import { Turnstile, TURNSTILE_SITE_KEY, type TurnstileHandle } from "@/components/turnstile";
-import { Tile } from "@/components/app-launcher";
-import { XOXO_APPS } from "@/lib/xoxocom-apps";
+import { BrandLogo } from "@/components/brand-logo";
 
 type Mode = "signin" | "signup";
-const SELF = XOXO_APPS.find(a => a.id === "stories")!;
 
 /** Loose on purpose: catches a missing @ or dot, leaves the verdict to the server. */
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -132,7 +130,7 @@ export default function LoginPage() {
   return (
     <main className="auth">
       <div className="auth-card">
-        <div className="auth-brand"><Tile app={SELF} size={22} /><span>User Story Schneider</span></div>
+        <div className="auth-brand"><BrandLogo size={36} as="div" /></div>
         <h1>{signup ? "Create your account" : "Welcome back"}</h1>
         <p className="auth-sub">
           {signup

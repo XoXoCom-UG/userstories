@@ -12,7 +12,12 @@ export default function Home() {
           <main className="main" id="main-content">
             <div className="hero">
               <h1>User Story Schneider</h1>
-              <p>Describe your project in a few sentences. Get user stories and a roadmap you can hand to a team.</p>
+              {/* The three steps, as a flow: the arrow between them is the only decoration. */}
+              <ol className="flow" aria-label="How it works">
+                <li>Describe your project</li>
+                <li>We cut it into stories</li>
+                <li>Get stories and a roadmap</li>
+              </ol>
             </div>
             <Workbench />
           </main>

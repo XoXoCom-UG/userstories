@@ -21,8 +21,8 @@ export const GLYPH: Record<XoxoAppId, string> = {
   agentix: '<path d="M7 7l10 10"/><path d="M17 7L7 17"/>',
   // A set square over a plan.
   architect: '<path d="M5 19V5l14 14H5Z"/><path d="M9 19v-4M13 19v-2"/>',
-  // A card cut in two.
-  stories: '<rect x="4" y="5" width="16" height="6" rx="1.5"/><rect x="4" y="14" width="10" height="5" rx="1.5"/><path d="M17 15l3 4M20 15l-3 4"/>',
+  // One card cut corner to corner into two pieces (the User Story Schneider mark).
+  stories: '<path d="M5 5h9L5 14Z"/><path d="M19 19h-9l9-9Z"/>',
   // A rising path to a flag.
   coach: '<path d="M5 19c4 0 3-6 7-6s3-6 7-6"/><path d="M19 7V3"/><path d="M19 3h-3"/>',
 };
@@ -101,7 +101,6 @@ export function AppLauncher({ current }: { current: XoxoAppId }) {
         <div ref={menuRef} id={menuId} role="group" aria-label={t("Our apps")}
           className={`popover al-panel t-dropdown${phaseClass(phase)}`} data-origin="top-right"
           onKeyDown={onKey} onClick={e => e.stopPropagation()}>
-          <p className="al-head">{t("Our apps")}</p>
           <div className="al-grid">
             {XOXO_APPS.map(app => {
               const here = app.id === current;
@@ -112,19 +111,17 @@ export function AppLauncher({ current }: { current: XoxoAppId }) {
                 <>
                   <Tile app={app} />
                   <span className="al-name">{app.name}</span>
-                  <span className="al-blurb">{t(app.blurb)}</span>
-                  {here && <span className="al-tag">{t("You are here")}</span>}
-                  {!href && <span className="al-tag">{t("Soon")}</span>}
+                  {!href && <span className="al-soon">{t("Soon")}</span>}
                 </>
               );
               // Not built yet: a plain box, not a link that goes nowhere.
               return href ? (
-                <a key={app.id} className={`al-item${here ? " is-current" : ""}`} href={href}
+                <a key={app.id} className={`al-item${here ? " is-current" : ""}`} href={href} title={t(app.blurb)}
                   aria-current={here ? "page" : undefined} onClick={() => setOpen(false)}>
                   {body}
                 </a>
               ) : (
-                <div key={app.id} className="al-item is-soon" aria-disabled="true">{body}</div>
+                <div key={app.id} className="al-item is-soon" aria-disabled="true" title={t(app.blurb)}>{body}</div>
               );
             })}
           </div>
